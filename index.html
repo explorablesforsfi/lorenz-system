@@ -1,0 +1,52 @@
+<meta charset="utf-8">
+<head>
+<script src="./libs/d3.v4.min.js"></script>
+<script src="./libs/d3-scale-chromatic.v1.min.js"></script>
+<script src="./libs/d3-color.v1.min.js"></script>
+<script src="./libs/simple_plot.js"></script>
+<script src="./libs/widget.v3.4.js"></script>
+<script src="./libs/rk45-min.js"></script>
+<script src="./gui/main_gui.js"></script>
+<script src="./lorenz-libs/lorenz-integrator.js"></script>
+<script src="./lorenz-libs/lorenz.js"></script>
+<link rel="stylesheet" type="text/css" href="./css/widgets_white_bg.css">
+<link rel="stylesheet" type="text/css" href="./css/main.css">
+</head>
+<body>
+
+    <div id="main_container">
+
+        <div id="main_gui_container" style="margin:2;"></div>
+        <div id="lorenz_container" style="margin:2;"></div>
+        <div id="lorenz_plot_container" style="margin:2;"></div>
+
+    </div>
+
+
+
+<script>
+
+    // Start the main simulation with all forces
+    var lorenz = new Lorenz({
+                             lorenz_div: '#lorenz_container',
+                             plot_div: '#lorenz_plot_container', 
+                             plot_width:200,
+                             plot_height:200,
+                             lorenz_width:200,
+                             lorenz_height:200,
+                             plot_config:{
+                                 margin: 20,
+                                 fastScatter: true
+                             },
+                             integrator_config: {
+                                    //sigma: 0.25, 
+                                    //rho: 1,
+                                    //beta: 2/3,
+                                    dt: 0.01
+                             },
+                            }); 
+    start_main_gui("#main_gui_container",450,300,lorenz);
+</script>
+
+</body>
+
