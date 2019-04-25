@@ -13,7 +13,7 @@ Then change to this repository and start a local webserver
     cd lorenz-system
     python -m "http.server" 1313
     
-Go to your browser and navigate to http://localhost:1313 .
+Go to your browser and navigate to http://localhost:1313/ or http://localhost:1313/trajectories.html .
 
 ![lorenz-system](https://github.com/explorablesforsfi/lorenz-system/raw/master/img/example.png)
 
