@@ -63,6 +63,11 @@ class lorenzIntegrator
 
   }
 
+  get_parameters()
+  {
+    return {sigma: this.sigma, rho: this.rho, beta: this.beta};
+  }
+
   set_parameters(user_config={})
   {
     let config = {

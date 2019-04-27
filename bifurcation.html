@@ -1,0 +1,87 @@
+<meta charset="utf-8">
+<head>
+<script src="./libs/d3.v4.min.js"></script>
+<script src="./libs/d3-scale-chromatic.v1.min.js"></script>
+<script src="./libs/d3-color.v1.min.js"></script>
+<script src="./libs/simple_plot.js"></script>
+<script src="./libs/widget.v3.4.js"></script>
+<script src="./libs/rk45-min.js"></script>
+<script src="./gui/main_gui.js"></script>
+<script src="./lorenz-libs/lorenz-integrator.js"></script>
+<script src="./lorenz-libs/lorenz-bifurcation.js"></script>
+<script src="./lorenz-libs/lorenz.js"></script>
+<link rel="stylesheet" type="text/css" href="./css/widgets_white_bg.css">
+<link rel="stylesheet" type="text/css" href="./css/main.css">
+</head>
+<body>
+
+    <div id="main_container">
+
+        <div id="bifurcation_container" style="margin:2;"></div>
+        <div id="lorenz_container" style="margin:2;"></div>
+        <div id="lorenz_plot_container" style="margin:2;"></div>
+
+    </div>
+
+
+
+<script>
+
+    // Start the main simulation with all forces
+    var lorenzODE = new lorenzIntegrator({
+                                    sigma: 10, 
+                                    rho: 1,
+                                    beta: 8/3,
+                                    dt: 0.05
+                                  }); 
+    var bifurcation = new lorenzBifurcation('#bifurcation_container',
+                                            'rho',
+                                            {
+                                               control_observable_string: 2,
+                                               plotted_observable_string: 0,
+                                               control_observable_value: 30,
+                                            }
+                                           )
+    bifurcation.pl.ylabel('x');
+
+    let rhos = d3.range(900,1500).map(n => n/10);
+    /*
+       lorenzODE.set_parameters({rho:55});
+    bifurcation.update_parameters(0,0,{rho:55},lorenzODE.initial_condition)
+
+    for(var i=1; i<10000; ++i)
+    {
+        res = lorenzODE.get_next_result();
+        bifurcation.update_values(res.t, res.x, false);
+        console.log(res.x[2]);
+    }
+
+    */
+    bifurcation.update_plot();
+    let irho = 0;
+
+    timer = d3.timer(function(){
+        update(rhos[irho])
+        ++irho;
+        if(irho == rhos.length)
+            timer.stop()
+
+    });
+   
+    function update(r){
+        lorenzODE.reset_ode()
+        lorenzODE.set_parameters({rho:r});
+        bifurcation.control_observable_value = r -1;
+        bifurcation.update_parameters(0,10,{rho:r},lorenzODE.initial_condition)
+        for(var i=1; i<1000; ++i)
+        {
+            res = lorenzODE.get_next_result();
+            bifurcation.update_values(res.t, res.x, false);
+        }
+        bifurcation.update_plot();
+    }
+                                            
+</script>
+
+</body>
+
